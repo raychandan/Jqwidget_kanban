@@ -21,8 +21,16 @@
     "lib": [
       "es2020",
       "dom"
-    ]
+    ],
+    "strictPropertyInitialization": false
   },
+  "include": [
+    "src/**/*"
+  ],
+  "files": [
+  "src/app/app.module.ts",
+  "node_modules/jqwidgets-scripts/jqwidgets-ts/angular_jqxkanban.ts"
+  ],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
