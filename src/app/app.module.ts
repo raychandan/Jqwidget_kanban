@@ -8,6 +8,7 @@ import { KanbanModule } from '@syncfusion/ej2-angular-kanban';
 import { KanbanComponent } from './kanban/kanban.component';
 import { jqxKanbanModule } from 'jqwidgets-ng/jqxkanban';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AppRoutingModule,
     KanbanModule,
     jqxKanbanModule,
-    NgbModule
+    NgbModule,
+    DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent]

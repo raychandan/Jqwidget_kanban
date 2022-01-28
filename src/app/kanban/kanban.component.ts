@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { jqxKanbanComponent } from 'jqwidgets-ng/jqxkanban';
 // import { jqxKanbanComponent } from 'jqwidgets-ts/angular_jqxkanban';
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-kanban',
@@ -13,6 +14,20 @@ export class KanbanComponent implements OnInit,AfterViewInit {
   popup:any;
   popupData:any;
   isItemMoved: boolean = true;
+
+  items = ['Carrots', 'Tomatoes', 'Onions', 'Apples', 'Avocados'];
+
+  basket = ['Oranges', 'Bananas', 'Cucumbers'];
+
+  public board: Board = new Board('Test Board', [
+    new Column('Ideas', '21', [
+      'Some random idea',
+      'This is another random idea',
+    ]),
+    new Column('Research', '32', ['Lorem ipsum', 'foo']),
+  ]);
+  boardConectedTo = ['21','32'];
+
 
   @ViewChild('myKanban') myKanban: jqxKanbanComponent;
 
@@ -382,4 +397,73 @@ export class KanbanComponent implements OnInit,AfterViewInit {
     
   }
 
+  // drop(event: CdkDragDrop<string[]>) {
+  //   if (event.previousContainer === event.container) {
+  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  //   } else {
+  //     transferArrayItem(
+  //       event.previousContainer.data,
+  //       event.container.data,
+  //       event.previousIndex,
+  //       event.currentIndex,
+  //     );
+  //   }
+  // }
+
+
+  public dropGrid(event: CdkDragDrop<string[]>): void {
+    // console.log("DropGrid>>>>>>>",event)
+    moveItemInArray(
+      this.board.columns,
+      event.previousIndex,
+      event.currentIndex
+    );
+  }
+
+  public drop(event: CdkDragDrop<string[]>): void {
+    // console.log("Drop>>>>>>>",event)
+    if (event.previousContainer === event.container) {
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    }
+  }
+
+  addColumn(){
+    this.board.columns.push(new Column('Anime', '102', [
+      'Pikachu',
+      'Naruto',
+    ]))
+    this.boardConectedTo.push('102')
+    console.log("Board",this.board);
+  }
+
+  addTask(){
+    this.board.columns[0].tasks.push("New Task")
+  }
+
+  openPopup(event:any){
+    // console.log("event",event.target.innerHTML)
+    this.popup = true;
+    this.popupData = event.target.innerHTML;
+  }
+
+
+}
+
+class Column {
+  constructor(public name: string, public id: string, public tasks: string[]) {}
+}
+
+class Board {
+  constructor(public name: string, public columns: Column[]) {}
 }
