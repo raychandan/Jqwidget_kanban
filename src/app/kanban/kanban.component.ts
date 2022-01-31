@@ -21,12 +21,13 @@ export class KanbanComponent implements OnInit,AfterViewInit {
 
   public board: Board = new Board('Test Board', [
     new Column('Ideas', '21', [
-      'Some random idea',
-      'This is another random idea',
+     { name:'Some random idea'},
+      {name:'This is another random idea'},
     ]),
-    new Column('Research', '32', ['Lorem ipsum', 'foo']),
+    new Column('Research', '32', [{name:'Lorem ipsum'}, {name:'foo'}]),
   ]);
   boardConectedTo = ['21','32'];
+  searchText:any;
 
 
   @ViewChild('myKanban') myKanban: jqxKanbanComponent;
@@ -420,7 +421,7 @@ export class KanbanComponent implements OnInit,AfterViewInit {
     );
   }
 
-  public drop(event: CdkDragDrop<string[]>): void {
+  public drop(event: CdkDragDrop<object[]>): void {
     // console.log("Drop>>>>>>>",event)
     if (event.previousContainer === event.container) {
       moveItemInArray(
@@ -440,15 +441,15 @@ export class KanbanComponent implements OnInit,AfterViewInit {
 
   addColumn(){
     this.board.columns.push(new Column('Anime', '102', [
-      'Pikachu',
-      'Naruto',
+      {name:'Pikachu'},
+      {name:'Naruto'},
     ]))
     this.boardConectedTo.push('102')
     console.log("Board",this.board);
   }
 
   addTask(){
-    this.board.columns[0].tasks.push("New Task")
+    this.board.columns[0].tasks.push({name:"New Task"})
   }
 
   openPopup(event:any){
@@ -456,12 +457,10 @@ export class KanbanComponent implements OnInit,AfterViewInit {
     this.popup = true;
     this.popupData = event.target.innerHTML;
   }
-
-
 }
 
 class Column {
-  constructor(public name: string, public id: string, public tasks: string[]) {}
+  constructor(public name: string, public id: string, public tasks: object[]) {}
 }
 
 class Board {

@@ -9,6 +9,8 @@ import { KanbanComponent } from './kanban/kanban.component';
 import { jqxKanbanModule } from 'jqwidgets-ng/jqxkanban';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { FormsModule } from '@angular/forms';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     KanbanModule,
     jqxKanbanModule,
     NgbModule,
-    DragDropModule
+    DragDropModule,
+    FormsModule,
+    Ng2SearchPipeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
