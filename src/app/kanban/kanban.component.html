@@ -1,7 +1,7 @@
 
 <div class="overlay" *ngIf="popup">
     <div class="popup">
-        <h2>Here i am</h2>
+        <h2>Task Detail</h2>
         <a class="close" (click)="popup = false">&times;</a>
         <div class="content">
         you have selected this event
@@ -12,49 +12,35 @@
     </div>
 </div>
 
-
-
-<jqxKanban [theme]="'material'" #myKanban (onItemMoved)="myKanbanOnItemMoved($event)"
-    (onItemAttrClicked)="myKanbanOnItemAttrClicked($event)" (onColumnAttrClicked)="myKanbanonColumnAttrClicked($event)" 
-    [height]="600" [width]="getWidth()" [template]="template" [source]="dataAdapter" [columns]="columns" 
-    [resources]="resourcesAdapterFunc()" [itemRenderer]="itemRenderer" [columnRenderer]="columnRenderer">
-</jqxKanban>
-
-<!-- <jqxKanban [height]='height'></jqxKanban> -->
-
-<!-- <div cdkDropListGroup>
-    <div class="example-container">
-      <h2>Available items</h2>
-  
-      <div
-        cdkDropList
-        [cdkDropListData]="items"
-        class="example-list"
-        cdkDropListSortingDisabled
-        (cdkDropListDropped)="drop($event)">
-        <div class="example-box" *ngFor="let item of items" cdkDrag>{{item}}</div>
-      </div>
+<div class="overlay" *ngIf="taskPopup">
+    <div class="popup">
+        <h2>Add Task</h2>
+        <a class="close" (click)="taskPopup = false">&times;</a>
+        <div class="content">
+            <input [(ngModel)]="newTaskName" placeholder="Task Name"/>
+            <button (click)="addTask(taskId)">Save</button>
+            <p *ngIf="taskError" style="color:red">Name is required.</p>
+        </div>
     </div>
-  
-    <div class="example-container">
-      <h2>Shopping basket</h2>
-  
-      <div
-        cdkDropList
-        [cdkDropListData]="basket"
-        class="example-list"
-        (cdkDropListDropped)="drop($event)">
-        <div class="example-box" *ngFor="let item of basket" cdkDrag>{{item}}</div>
-      </div>
+</div>
+
+<div class="overlay" *ngIf="columnPopup">
+    <div class="popup">
+        <h2>Add Column</h2>
+        <a class="close" (click)="columnPopup = false">&times;</a>
+        <div class="content">
+            <input [(ngModel)]="newColumnName" placeholder="Column Name"/>
+            <button (click)="addColumn()">Save</button>
+            <p *ngIf="columnError" style="color:red">Name is required.</p>
+        </div>
     </div>
-  </div> -->
+</div>
+
+<br/>
 &nbsp;
-  <button (click)="addColumn();">Add Column</button>
+  <button class="btn btn-primary" (click)="addColumnPopup();">Add Column</button>
 &nbsp;
-  <button (click)="addTask();">Add Task</button>
-  <!-- (keyup)="searchTask($event)" -->
-&nbsp;
-  <input type="text" [(ngModel)]="searchText" placeholder="Search Task"/>
+  <input type="text" [(ngModel)]="searchText" placeholder="Search Task" class="task-search"/>
 
   <div class="root">
     <div class="board">
@@ -68,7 +54,15 @@
                 cdkDragLockAxis="x" class="board-column" 
                 *ngFor="let column of board.columns" cdkDrag>
                 <div class="column-title" cdkDragHandle>
-                {{ column.name }}
+               
+                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                <div class="icons-pad">
+                    <i class="fa fa-pencil fa-sm" aria-hidden="true" (click)="makeEditableTitle(column.id)"></i>
+                    <i class="fa fa-plus" aria-hidden="true" (click)="addTaskPopup(column.id)"></i>
+                    <i class="fa fa-trash-o" aria-hidden="true" (click)="deleteColumn(column.id)"></i>
+                </div>
+               
+                <input class="title" name="title-{{column.id}}" id="title-{{column.id}}" [value]="column.name" [disabled]="titleDisable" (blur)="onTitleBulr(column.id)"/>
                 </div>
                 <div class="tasks-container"
                 id="{{column.id}}"
